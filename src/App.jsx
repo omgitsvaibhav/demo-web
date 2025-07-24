@@ -1,10 +1,38 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 //hfsdfsdfasdvsdfacfdsf
 function App() {
   const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    const handleCookieConsent = (event) => {
+      const { status, cookieSettings, acceptedCookies, rejectedCookies } = event.detail;
+      
+      console.log('Cookie Consent Event:', {
+        status,
+        cookieSettings,
+        acceptedCookies,
+        rejectedCookies,
+      });
+
+      // Example: Send to analytics or update state
+      if (status === 'accepted') {
+        // Do something (e.g., enable Google Analytics)
+      }
+    };
+
+    // Add event listener
+    window.addEventListener('cookieConsentAccept', handleCookieConsent);
+    window.addEventListener('cookieConsentReject', handleCookieConsent);
+
+    // Cleanup on unmount
+    return () => {
+      window.removeEventListener('cookieConsentAccept', handleCookieConsent);
+      window.removeEventListener('cookieConsentReject', handleCookieConsent);
+    };
+  }, []);
 
   return (
     <>
